@@ -1,0 +1,102 @@
+/* SlotGeneration.css */
+.slot-generation-container {
+  padding: 2rem;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+}
+
+.slot-generation-title {
+  color: #2c3e50;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  border-bottom: 3px solid #3498db;
+  padding-bottom: 0.5rem;
+  display: inline-block;
+}
+
+.slot-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+
+.slot-table th,
+.slot-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.slot-table th {
+  background-color: #34495e;
+  color: white;
+  font-weight: 600;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.status-badge.pending {
+  background-color: #f1c40f;
+  color: #2c3e50;
+}
+
+.status-badge.generated {
+  background-color: #2ecc71;
+  color: white;
+}
+
+.generate-btn {
+  background: linear-gradient(135deg, #3498db, #2c3e50);
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.generate-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.25);
+}
+
+.generated-slots {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 2px solid #f0f0f0;
+}
+
+.slot-details {
+  width: 100%;
+  margin: 1rem 0;
+  border-collapse: collapse;
+}
+
+.slot-details th {
+  background-color: #ecf0f1;
+  color: #2c3e50;
+  padding: 0.8rem;
+}
+
+.slot-details td {
+  padding: 0.8rem;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+@media (max-width: 768px) {
+  .slot-table {
+    display: block;
+    overflow-x: auto;
+  }
+  
+  .slot-generation-container {
+    padding: 1rem;
+  }
+}

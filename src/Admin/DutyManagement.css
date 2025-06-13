@@ -1,0 +1,103 @@
+/* src/Admin/DutyManagement.css */
+
+.duty-card {
+  max-width: 600px;
+  margin: 2.5rem auto;
+  padding: 2.5rem 2rem;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 4px 24px rgba(44,62,80,0.09);
+}
+
+.duty-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 2rem;
+  border-bottom: 3px solid #3498db;
+  display: inline-block;
+  padding-bottom: 0.5rem;
+}
+
+.duty-form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.cadre-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.cadre-label {
+  font-weight: 600;
+  color: #34495e;
+  font-size: 1.1rem;
+}
+
+.cadre-desc {
+  font-size: 0.95rem;
+  color: #7f8c8d;
+  margin-left: 0.5rem;
+}
+
+.cadre-group input[type="number"] {
+  width: 120px;
+  padding: 0.7rem 1rem;
+  border: 2px solid #e0e7f1;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #f8fafc;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+
+.cadre-group input[type="number"]:focus {
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+  outline: none;
+}
+
+.duty-save-btn {
+  margin-top: 1.5rem;
+  background: linear-gradient(135deg, #3498db, #2c3e50);
+  color: white;
+  padding: 0.9rem 2.2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(44,62,80,0.12);
+}
+
+.duty-save-btn:hover {
+  background: linear-gradient(135deg, #2c3e50, #3498db);
+  box-shadow: 0 4px 16px rgba(44,62,80,0.18);
+}
+
+.duty-success {
+  margin-top: 1.2rem;
+  color: #27ae60;
+  background: #eafaf1;
+  border-radius: 6px;
+  padding: 0.7rem 1rem;
+  font-weight: 600;
+  font-size: 1rem;
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .duty-card {
+    padding: 1.2rem 0.5rem;
+    margin: 1rem;
+  }
+  .duty-title {
+    font-size: 1.3rem;
+  }
+  .duty-form {
+    gap: 1.2rem;
+  }
+}
