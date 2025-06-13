@@ -1,21 +1,35 @@
-/* UserDashboard.css */
+:root {
+  --sidebar-width: 220px;
+  --sidebar-width-mobile: auto;
+  --sidebar-bg: linear-gradient(135deg, #34495e 70%, #3498db 100%);
+  --sidebar-shadow: 2px 0 12px rgba(44,62,80,0.08);
+  --sidebar-shadow-mobile: 2px 0 18px rgba(44,62,80,0.18);
+  --sidebar-text: #fff;
+  --sidebar-link-hover: rgba(255,255,255,0.16);
+  --sidebar-link-active: #f1c40f;
+  --main-bg: #f5f7fa;
+}
 
 .dashboard-container {
   display: flex;
   min-height: 100vh;
-  background: #f5f7fa;
+  background: var(--main-bg);
   font-family: 'Segoe UI', Arial, sans-serif;
+  position: relative;
 }
 
 .sidebar {
-  width: 220px;
-  background: linear-gradient(135deg, #34495e 70%, #3498db 100%);
-  color: #fff;
+  width: var(--sidebar-width);
+  background: var(--sidebar-bg);
+  color: var(--sidebar-text);
   padding: 2rem 1rem 1rem 1.5rem;
-  box-shadow: 2px 0 12px rgba(44,62,80,0.08);
+  box-shadow: var(--sidebar-shadow);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  position: relative;
+  z-index: 1001;
+  transition: left 0.28s cubic-bezier(.4,2.08,.55,.44), width 0.2s;
 }
 
 .sidebar h2 {
@@ -52,21 +66,62 @@
 
 .sidebar nav a:hover,
 .sidebar nav a.active {
-  background: rgba(255,255,255,0.16);
-  color: #f1c40f;
+  background: var(--sidebar-link-hover);
+  color: var(--sidebar-link-active);
   box-shadow: 0 2px 8px rgba(44,62,80,0.09);
 }
 
 .main-content {
   flex: 1;
   padding: 2.5rem 2.5rem 2rem 2.5rem;
-  background: #f5f7fa;
+  background: var(--main-bg);
   min-height: 100vh;
   overflow-y: auto;
   border-left: 1px solid #eaeaea;
   box-shadow: 0 0 12px rgba(44,62,80,0.04) inset;
+  transition: filter 0.3s;
 }
 
+/* Hamburger toggle button */
+.sidebar-toggle {
+  display: none;
+  position: fixed;
+  top: 18px;
+  left: 16px;
+  z-index: 2002;
+  background: #34495e;
+  border: none;
+  border-radius: 7px;
+  padding: 9px 8px;
+  cursor: pointer;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(44,62,80,0.13);
+  transition: background 0.2s;
+}
+
+.sidebar-toggle:active,
+.sidebar-toggle:focus {
+  background: #217dbb;
+  outline: none;
+}
+
+.hamburger {
+  width: 28px;
+  height: 3px;
+  background: #fff;
+  margin: 4px 0;
+  border-radius: 2px;
+  display: block;
+  transition: all 0.2s;
+}
+
+.sidebar-backdrop {
+  display: none;
+}
+
+/* Tablet: horizontal nav */
 @media (max-width: 900px) {
   .dashboard-container {
     flex-direction: column;
@@ -78,6 +133,7 @@
     padding: 1.2rem 0.5rem;
     box-shadow: none;
     border-bottom: 1px solid #eaeaea;
+    min-height: 60px;
   }
   .sidebar h2 {
     margin-bottom: 0;
@@ -95,4 +151,75 @@
   .main-content {
     padding: 1.2rem 0.5rem;
   }
+}
+
+/* Mobile: sidebar overlay, hamburger visible, main blurred when open */
+@media (max-width: 700px) {
+  .sidebar-toggle {
+    display: flex;
+    width: 44px;
+    height: 44px;
+    padding: 8px;
+    top: 12px;
+    left: 12px;
+  }
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: -100vw;
+    height: 100vh;
+    width: var(--sidebar-width-mobile);
+    min-width: 160px;
+    max-width: 95vw;
+    z-index: 2001;
+    background: var(--sidebar-bg);
+    box-shadow: var(--sidebar-shadow-mobile);
+    transition: left 0.28s cubic-bezier(.4,2.08,.55,.44), width 0.2s;
+    padding: 2.2rem 1.1rem 1rem 1.3rem;
+    border-right: 1px solid #eaeaea;
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .sidebar.open {
+    left: 0;
+  }
+  .sidebar h2 {
+    font-size: 1.08rem;
+    margin-bottom: 1.2rem;
+    margin-right: 0;
+  }
+  .sidebar nav ul {
+    display: block;
+    width: 100%;
+  }
+  .sidebar nav li {
+    margin-bottom: 1.1rem;
+  }
+  .sidebar nav a {
+    font-size: 1rem;
+    padding: 0.62rem 0.9rem;
+  }
+  .main-content {
+    padding: 1.2rem 0.5rem;
+    margin-left: 0;
+    transition: filter 0.3s;
+  }
+  .sidebar-backdrop {
+    display: block;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(44,62,80,0.21);
+    z-index: 2000;
+    animation: fadeIn 0.28s;
+  }
+  .dashboard-container.sidebar-active .main-content {
+    filter: blur(2px) grayscale(0.08);
+    pointer-events: none;
+    user-select: none;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }

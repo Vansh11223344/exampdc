@@ -1,4 +1,3 @@
-// Admin/ExamList.jsx
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './ExamList.css';
@@ -42,83 +41,90 @@ const ExamList = () => {
   const handleFilterChange = () => setCurrentPage(1);
 
   return (
-    <div className="main-content">
-  <h2 className="exam-title">Exam Records</h2>
-  
-  <div className="search-filter-wrapper">
-    <div className="search-filter">
-      <input 
-        type="text" 
-        placeholder="Search exams..." 
-        className="search-input" 
-        value={searchTerm}
-        onChange={(e) => {
-          setSearchTerm(e.target.value);
-          handleFilterChange();
-        }}
-      />
-      <select 
-        className="filter-select"
-        value={selectedSemester}
-        onChange={(e) => {
-          setSelectedSemester(e.target.value);
-          handleFilterChange();
-        }}
-      >
-        {semesters.map(semester => (
-          <option key={semester} value={semester}>{semester}</option>
-        ))}
-      </select>
-    </div>
-  </div>
+    <div className="exam-list-container">
+      <header className="exam-list-header">
+        <h1 className="exam-title">Exam Records</h1>
+      </header>
 
-  <div className="table-container">
-    <table className="exam-table">
-      <thead>
-        <tr>
-          <th>Date</th>
-          <th>Semester</th>
-          <th>Course</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {currentExams.length === 0 ? (
-          <tr>
-            <td colSpan={4} className="no-data">No exams found.</td>
-          </tr>
-        ) : (
-          currentExams.map(exam => (
-            <tr key={exam.id}>
-              <td data-label="Date">{exam.date}</td>
-              <td data-label="Semester">{exam.semester}</td>
-              <td data-label="Course">{exam.course}</td>
-              <td data-label="Actions">
-                <Link to={`/admin/exams/${exam.id}`} className="btn-table btn-edit">Edit</Link>
-                <button className="btn-table btn-danger">Delete</button>
-              </td>
-            </tr>
-          ))
+      <section className="exam-controls">
+        <div className="search-container">
+          <input 
+            type="text" 
+            placeholder="Search exams..." 
+            className="search-input"
+            value={searchTerm}
+            onChange={(e) => {
+              setSearchTerm(e.target.value);
+              handleFilterChange();
+            }}
+          />
+        </div>
+        <div className="filter-container">
+          <select 
+            className="filter-select"
+            value={selectedSemester}
+            onChange={(e) => {
+              setSelectedSemester(e.target.value);
+              handleFilterChange();
+            }}
+          >
+            {semesters.map(semester => (
+              <option key={semester} value={semester}>{semester}</option>
+            ))}
+          </select>
+        </div>
+      </section>
+
+      <section className="exam-data">
+        <div className="table-wrapper">
+          <table className="exam-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Semester</th>
+                <th>Course</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentExams.length === 0 ? (
+                <tr>
+                  <td colSpan={4} className="no-data">No exams found.</td>
+                </tr>
+              ) : (
+                currentExams.map(exam => (
+                  <tr key={exam.id}>
+                    <td data-label="Date">{exam.date}</td>
+                    <td data-label="Semester">{exam.semester}</td>
+                    <td data-label="Course">{exam.course}</td>
+                    <td data-label="Actions">
+                      <Link to={`/admin/exams/${exam.id}`} className="btn-table btn-edit">Edit</Link>
+                      <button className="btn-table btn-danger">Delete</button>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+
+        {filteredExams.length > itemsPerPage && (
+          <div className="pagination-container">
+            <div className="pagination">
+              {Array(Math.ceil(filteredExams.length / itemsPerPage)).fill().map((_, i) => (
+                <button
+                  key={i + 1}
+                  className={`pagination-btn${currentPage === i + 1 ? ' active' : ''}`}
+                  onClick={() => handlePageChange(i + 1)}
+                >
+                  {i + 1}
+                </button>
+              ))}
+            </div>
+          </div>
         )}
-      </tbody>
-    </table>
-  </div>
-
-  {filteredExams.length > 0 && (
-    <div className="pagination">
-      {Array(Math.ceil(filteredExams.length / itemsPerPage)).fill().map((_, i) => (
-        <button
-          key={i + 1}
-          className={`pagination-btn${currentPage === i + 1 ? ' active' : ''}`}
-          onClick={() => handlePageChange(i + 1)}
-        >
-          {i + 1}
-        </button>
-      ))}
+      </section>
     </div>
-  )}
-</div>
-
   );
 };
 
