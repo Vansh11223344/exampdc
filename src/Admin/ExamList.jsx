@@ -1,4 +1,26 @@
-import { useState } from 'react';
+// src/Admin/ExamList.jsx
+import { useState, useEffect } from 'react';
+import {
+  Container,
+  Typography,
+  TextField,
+  Select,
+  MenuItem,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Button,
+  Grid,
+  Box,
+  Pagination,
+  InputAdornment
+} from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { Link } from 'react-router-dom';
 import './ExamList.css';
 
@@ -20,12 +42,14 @@ const ExamList = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedSemester, setSelectedSemester] = useState('All Semesters');
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const itemsPerPage = 6;
+
+  const semesters = ['All Semesters', ...new Set(allExams.map(exam => exam.semester))];
 
   const filteredExams = allExams.filter(exam => {
-    const matchesSearch = exam.course.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                          exam.semester.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          exam.date.includes(searchTerm);
+    const matchesSearch = exam.course.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      exam.semester.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      exam.date.includes(searchTerm);
     const matchesSemester = selectedSemester === 'All Semesters' || exam.semester === selectedSemester;
     return matchesSearch && matchesSemester;
   });
@@ -35,96 +59,144 @@ const ExamList = () => {
     currentPage * itemsPerPage
   );
 
-  const semesters = ['All Semesters', ...new Set(allExams.map(exam => exam.semester))];
-
-  const handlePageChange = (page) => setCurrentPage(page);
+  const handlePageChange = (_, value) => setCurrentPage(value);
   const handleFilterChange = () => setCurrentPage(1);
 
-  return (
-    <div className="exam-list-container">
-      <header className="exam-list-header">
-        <h1 className="exam-title">Exam Records</h1>
-      </header>
+  useEffect(() => {
+    const underline = document.querySelector('.animated-underline');
+    if (underline) underline.classList.add('show-line');
+  }, []);
 
-      <section className="exam-controls">
-        <div className="search-container">
-          <input 
-            type="text" 
-            placeholder="Search exams..." 
-            className="search-input"
+  return (
+    <Container  maxWidth="lg"
+  disableGutters
+  sx={{
+    py: 0,
+    mt: 0,
+    height: '100vh',
+    overflow: 'hidden',  // Prevent scrollbars
+    display: 'flex',
+    flexDirection: 'column'
+  }}>
+      <Box className="exam-header-box">
+        <Typography variant="h4" className="exam-heading">
+          Exam Records
+        </Typography>
+      </Box>
+
+      <Grid container spacing={2} alignItems="center" sx={{ mb: 3 }}>
+        <Grid item xs={12} md={6}>
+          <TextField
+            placeholder="Search exams"
+            fullWidth
+            variant="outlined"
             value={searchTerm}
             onChange={(e) => {
               setSearchTerm(e.target.value);
               handleFilterChange();
             }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon sx={{ color: '#1565c0' }} />
+                </InputAdornment>
+              ),
+              className: 'search-bar'
+            }}
           />
-        </div>
-        <div className="filter-container">
-          <select 
-            className="filter-select"
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <Select
+            fullWidth
+            displayEmpty
             value={selectedSemester}
             onChange={(e) => {
               setSelectedSemester(e.target.value);
               handleFilterChange();
             }}
+            className="filter-select"
+            IconComponent={ArrowDropDownIcon}
+            inputProps={{ className: 'filter-input' }}
+             MenuProps={{
+    PaperProps: {
+      sx: {
+        mt: 1,
+        borderRadius: '10px',
+      },
+    },
+  }}
           >
             {semesters.map(semester => (
-              <option key={semester} value={semester}>{semester}</option>
+              <MenuItem key={semester} value={semester} className="dropdown-item">
+                {semester}
+              </MenuItem>
             ))}
-          </select>
-        </div>
-      </section>
+          </Select>
+        </Grid>
+      </Grid>
 
-      <section className="exam-data">
-        <div className="table-wrapper">
-          <table className="exam-table">
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Semester</th>
-                <th>Course</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {currentExams.length === 0 ? (
-                <tr>
-                  <td colSpan={4} className="no-data">No exams found.</td>
-                </tr>
-              ) : (
-                currentExams.map(exam => (
-                  <tr key={exam.id}>
-                    <td data-label="Date">{exam.date}</td>
-                    <td data-label="Semester">{exam.semester}</td>
-                    <td data-label="Course">{exam.course}</td>
-                    <td data-label="Actions">
-                      <Link to={`/admin/exams/${exam.id}`} className="btn-table btn-edit">Edit</Link>
-                      <button className="btn-table btn-danger">Delete</button>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
+      {filteredExams.length > itemsPerPage && (
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 1 }}>
+          <Pagination
+            count={Math.ceil(filteredExams.length / itemsPerPage)}
+            page={currentPage}
+            onChange={handlePageChange}
+            color="primary"
+            shape="rounded"
+          />
+        </Box>
+      )}
 
-        {filteredExams.length > itemsPerPage && (
-          <div className="pagination-container">
-            <div className="pagination">
-              {Array(Math.ceil(filteredExams.length / itemsPerPage)).fill().map((_, i) => (
-                <button
-                  key={i + 1}
-                  className={`pagination-btn${currentPage === i + 1 ? ' active' : ''}`}
-                  onClick={() => handlePageChange(i + 1)}
-                >
-                  {i + 1}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-      </section>
-    </div>
+      <TableContainer component={Paper} elevation={3}>
+        <Table>
+          <TableHead sx={{ bgcolor: '#1e293b' }}>
+            <TableRow>
+              <TableCell sx={{ color: '#fff' }}>Date</TableCell>
+              <TableCell sx={{ color: '#fff' }}>Semester</TableCell>
+              <TableCell sx={{ color: '#fff' }}>Course</TableCell>
+              <TableCell sx={{ color: '#fff' }}>Actions</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {currentExams.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={4} align="center" sx={{ fontStyle: 'italic', py: 4 }}>
+                  No exams found.
+                </TableCell>
+              </TableRow>
+            ) : (
+              currentExams.map(exam => (
+                <TableRow key={exam.id} hover>
+                  <TableCell>{exam.date}</TableCell>
+                  <TableCell>{exam.semester}</TableCell>
+                  <TableCell>{exam.course}</TableCell>
+                  <TableCell>
+                    <Button
+                      component={Link}
+                      to={`/admin/exams/${exam.id}`}
+                      variant="contained"
+                      size="small"
+                      sx={{ mr: 1, backgroundColor: '#1976d2' }}
+                    >
+                      Edit
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="error"
+                      size="small"
+                    >
+                      Delete
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
+
+      
+    </Container>
   );
 };
 

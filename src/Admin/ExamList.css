@@ -1,276 +1,78 @@
-:root {
-  --primary-color: #2c3e50;
-  --secondary-color: #3498db;
-  --accent-color: #e74c3c;
-  --success-color: #27ae60;
-  --table-header-bg: #34495e;
-  --table-row-alt: #f7fafc;
-  --table-row-hover: #eaf6fb;
-  --border-color: #e1e5eb;
-}
-
-/* Main container */
-.exam-list-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-/* Header section */
-.exam-list-header {
-  text-align: center;
-  margin-bottom: 1rem;
-}
-
-.exam-title {
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--primary-color);
+.exam-heading {
+  font-weight: 600;
+  color: #0d47a1;
+  font-family: "Segoe UI", sans-serif;
+  text-align: left;
   margin: 0;
-  padding-bottom: 0.5rem;
-  border-bottom: 2px solid var(--border-color);
+  font-size: 1.75rem;
 }
 
-/* Controls section */
-.exam-controls {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 1rem;
-  align-items: center;
-  padding: 0.5rem 0;
-}
-
-.search-input {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  border: 1px solid var(--border-color);
-  border-radius: 6px;
-  font-size: 1rem;
-  transition: border 0.2s, box-shadow 0.2s;
-}
-
-.search-input:focus {
-  border-color: var(--secondary-color);
-  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
-  outline: none;
-}
-
-.filter-select {
-  padding: 0.75rem 1rem;
-  border: 1px solid var(--border-color);
-  border-radius: 6px;
-  font-size: 1rem;
-  background: white;
-  min-width: 200px;
-  transition: border 0.2s, box-shadow 0.2s;
-}
-
-.filter-select:focus {
-  border-color: var(--secondary-color);
-  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
-  outline: none;
-}
-
-/* Table section */
-.exam-data {
+.exam-header-box {
+  width: 94%;
+  padding: 1.5rem 2rem;
+  margin-bottom: 2rem;
+  background: linear-gradient(90deg, #e3f2fd, #bbdefb, #90caf9);
+  border-radius: 12px;
   display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+  align-items: flex-end;
 }
 
-.table-wrapper {
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  border: 1px solid var(--border-color);
+/* Search bar style */
+.search-bar {
+  border-radius: 25px !important;
+  transition: box-shadow 0.3s;
+  background-color: #f9f9f9;
+  height: 40px;
 }
 
-.exam-table {
-  width: 100%;
-  border-collapse: collapse;
+.search-bar:hover {
+  box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.15);
+}
+
+/* Select filter styling */
+.filter-select {
+  border-radius: 25px !important;
+  background-color: #f9f9f9 !important;
+  transition: box-shadow 0.3s;
+  height: 40px !important;
+  display: flex !important;
+  align-items: center !important;
+  padding-left: 14px !important;
+}
+
+.filter-select:hover {
+  box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.15);
+}
+
+/* Reduce dropdown height */
+.filter-input {
+  padding-left: 10px !important;
+  margin: 10 !important;
+  height: 40px !important;
+  width: 10pc !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
   font-size: 0.95rem;
 }
 
-.exam-table th {
-  background: var(--table-header-bg);
-  color: white;
-  font-weight: 600;
-  padding: 1rem;
-  text-align: left;
+/* Dropdown options */
+.dropdown-item:hover {
+  background-color: #e3f2fd !important;
 }
 
-.exam-table td {
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid var(--border-color);
+.MuiSelect-icon {
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  right: 12px !important;
+  color: #1565c0;
 }
 
-.exam-table tr:last-child td {
-  border-bottom: none;
+.MuiTableBody-root {
+  height: calc(100vh - 350px); /* Adjust based on navbar/header */
+  overflow-y: hidden;
 }
 
-.exam-table tr:nth-child(even) {
-  background-color: var(--table-row-alt);
-}
-
-.exam-table tr:hover {
-  background-color: var(--table-row-hover);
-}
-
-.no-data {
-  text-align: center;
-  color: #666;
-  padding: 2rem;
-  font-style: italic;
-}
-
-/* Action buttons */
-.btn-table {
-  display: inline-block;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.2s;
-  margin-right: 0.5rem;
-  border: none;
-  text-decoration: none;
-}
-
-.btn-edit {
-  background-color: var(--secondary-color);
-  color: white;
-}
-
-.btn-edit:hover {
-  background-color: #2980b9;
-}
-
-.btn-danger {
-  background-color: var(--accent-color);
-  color: white;
-}
-
-.btn-danger:hover {
-  background-color: #c0392b;
-}
-
-/* Pagination */
-.pagination-container {
-  display: flex;
-  justify-content: center;
-}
-
-.pagination {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.pagination-btn {
-  padding: 0.5rem 0.9rem;
-  border: 1px solid var(--border-color);
-  border-radius: 4px;
-  background: white;
-  color: var(--primary-color);
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.pagination-btn:hover {
-  background-color: #f0f0f0;
-}
-
-.pagination-btn.active {
-  background-color: var(--secondary-color);
-  color: white;
-  border-color: var(--secondary-color);
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .exam-list-container {
-    padding: 1rem;
-  }
-  
-  .exam-title {
-    font-size: 1.5rem;
-  }
-  
-  .exam-controls {
-    grid-template-columns: 1fr;
-  }
-  
-  .filter-select {
-    width: 100%;
-  }
-}
-
-@media (max-width: 576px) {
-  .exam-table {
-    display: block;
-    overflow-x: auto;
-  }
-  
-  .exam-table th,
-  .exam-table td {
-    padding: 0.75rem 0.5rem;
-    font-size: 0.9rem;
-  }
-  
-  .btn-table {
-    padding: 0.4rem 0.8rem;
-    font-size: 0.85rem;
-    margin-right: 0.3rem;
-  }
-  
-  .pagination {
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-}
-
-/* Mobile card layout */
-@media (max-width: 480px) {
-  .exam-table {
-    border: 0;
-  }
-
-  .exam-table thead {
-    display: none;
-  }
-
-  .exam-table tr {
-    display: block;
-    margin-bottom: 1rem;
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
-    overflow: hidden;
-  }
-
-  .exam-table td {
-    display: block;
-    text-align: right;
-    padding-left: 50%;
-    position: relative;
-    border-bottom: 1px solid var(--border-color);
-  }
-
-  .exam-table td:last-child {
-    border-bottom: 0;
-  }
-
-  .exam-table td::before {
-    content: attr(data-label);
-    position: absolute;
-    left: 0;
-    width: 45%;
-    padding-left: 1rem;
-    font-weight: 600;
-    text-align: left;
-    color: var(--primary-color);
-  }
+.MuiTableRow-root {
+  height: 48px; /* You can adjust row height */
 }
