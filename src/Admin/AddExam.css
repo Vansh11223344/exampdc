@@ -7,6 +7,8 @@
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    max-height: 80vh;   /* or any height you prefer */
+  overflow-y: auto;
 }
 
 .add-exam-container h2 {
@@ -66,16 +68,15 @@
 
 .btn-primary {
   grid-column: 1 / -1;
-  background: linear-gradient(135deg, #3498db, #2c3e50);
+  background: #1976d2;
   color: white;
   padding: 1rem 2rem;
   border: none;
   border-radius: 8px;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   font-weight: 600;
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
-  margin-top: 1rem;
 }
 
 .btn-primary:hover {
@@ -121,4 +122,12 @@
   transform: translateY(-50%);
   color: #7f8c8d;
   pointer-events: none;
+}
+.add-exam-heading {
+  color: #2c3e50;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 3px solid #3498db;
+  display: inline-block;
 }
