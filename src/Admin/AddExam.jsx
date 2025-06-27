@@ -1,5 +1,4 @@
-// src/Admin/AddExam.jsx
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   FormControl,
   InputLabel,
@@ -64,6 +63,14 @@ const AddExam = () => {
     resourceRequiredCount: "",
   });
 
+  const formContainerRef = useRef(null);
+
+  useEffect(() => {
+    if (formContainerRef.current) {
+      formContainerRef.current.scrollTop = formContainerRef.current.scrollHeight;
+    }
+  }, [formData.subjectDept]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -97,21 +104,12 @@ const AddExam = () => {
   const showCourse = formData.semester !== "";
 
   return (
-    
     <div className="main-content">
-      
-      <div className="add-exam-container">
-        <Typography variant="h4" component="h2" sx={{ 
-          color: '#2c3e50', 
-          fontSize: '2rem', 
-          marginBottom: '2rem', 
-          paddingBottom: '0.5rem', 
-          borderBottom: '3px solid #3498db', 
-          display: 'inline-block' 
-        }}>
+      <div className="add-exam-container" ref={formContainerRef}>
+        <Typography variant="h4" component="h2" className="add-exam-heading">
           Add New Exam
         </Typography>
-        
+
         <Box component="form" className="exam-form" onSubmit={handleSubmit}>
           {/* Academic Year */}
           <FormControl fullWidth required sx={{ marginBottom: '1.2rem' }}>
@@ -461,26 +459,28 @@ const AddExam = () => {
           )}
 
           {/* Submit Button */}
-          <Button
-            type="submit"
-            variant="contained"
-            sx={{
-              backgroundColor: '#1976d2',
-              color: 'white',
-              padding: '1rem 2rem',
-              borderRadius: '8px',
-              fontSize: '1.29rem',
-              fontWeight: 600,
-              gridColumn: '1 / -1',
-              '&:hover': {
-                backgroundColor: '#1565c0',
-                transform: 'translateY(-1px)',
-                boxShadow: '0 4px 12px rgba(52, 152, 219, 0.25)',
-              },
-            }}
-          >
-            Create Exam
-          </Button>
+          <div className="submit-button-container">
+            <Button
+              type="submit"
+              variant="contained"
+              sx={{
+                  backgroundColor: '#1976d2',
+                  color: 'white',
+                  padding: '0.5rem 1.2rem',  
+                  borderRadius: '8px',
+                  width: 'auto',
+                  fontSize: '1rem',
+                  fontWeight: 500,
+                  boxShadow: '0 4px 12px rgba(52, 152, 219, 0.25)',
+                '&:hover': {
+                  backgroundColor: '#1565c0',
+                  transform: 'translateY(-1px)',
+                },
+              }}
+            >
+              Create Exam
+            </Button>
+          </div>
         </Box>
       </div>
     </div>

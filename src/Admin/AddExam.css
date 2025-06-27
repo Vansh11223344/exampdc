@@ -2,13 +2,14 @@
 
 .add-exam-container {
   max-width: 800px;
-  margin: 2rem auto;
-  padding: 2.5rem;
+  margin: 1rem auto;
+  padding: 1.7rem;
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-    max-height: 80vh;   /* or any height you prefer */
+  max-height: 70vh;   /* or any height you prefer */
   overflow-y: auto;
+  position: relative; /* Needed for sticky button */
 }
 
 .add-exam-container h2 {
@@ -20,10 +21,16 @@
   display: inline-block;
 }
 
+.submit-button-container {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
 .exam-form {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem;
+  gap: 1.4em;
 }
 
 .form-group {

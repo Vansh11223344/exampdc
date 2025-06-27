@@ -1,81 +1,146 @@
-import { useState, useEffect, useRef } from "react";
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { useState } from "react";
+import { Link, Outlet, useLocation, Navigate } from "react-router-dom";
+import {
+  Drawer,
+  IconButton,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  Toolbar,
+  Typography,
+  Box,
+  AppBar
+} from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
 import "./AdminDashboard.css";
+
+const drawerWidth = 240;
+
+const navLinks = [
+  { to: "exams", label: "Exam List" },
+  { to: "exams/add", label: "Add Exam" },
+  { to: "duties", label: "Duty Management" },
+  { to: "allocations", label: "Slot Allocation" },
+  { to: "resources", label: "Resource Management" },
+  { to: "slot-generation", label: "Slot Generation" },
+];
 
 const AdminDashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const sidebarRef = useRef(null);
   const location = useLocation();
 
-  // Close sidebar on route change (mobile)
-  useEffect(() => {
-    setSidebarOpen(false);
-  }, [location.pathname]);
+  // Redirect to exams by default
+  if (location.pathname === "/admin" || location.pathname === "/admin/") {
+    return <Navigate to="exams" replace />;
+  }
 
-  // Close sidebar if clicked outside (mobile)
-  useEffect(() => {
-    if (!sidebarOpen) return;
-    const handleClick = (e) => {
-      if (
-        sidebarRef.current &&
-        !sidebarRef.current.contains(e.target) &&
-        !e.target.classList.contains("sidebar-toggle")
-      ) {
-        setSidebarOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClick);
-    return () => document.removeEventListener("mousedown", handleClick);
-  }, [sidebarOpen]);
+  const drawer = (
+    <Box
+      sx={{
+        width: drawerWidth,
+        bgcolor: "#1e293b",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+      }}
+      role="presentation"
+      onClick={() => setSidebarOpen(false)}
+      onKeyDown={() => setSidebarOpen(false)}
+    >
+      <Toolbar sx={{ mb: 2 }}>
+        <Typography variant="h6" noWrap sx={{ fontWeight: 700, color: "#fff" }}>
+          Admin Panel
+        </Typography>
+      </Toolbar>
+      <List>
+        {navLinks.map((item) => (
+          <ListItem key={item.to} disablePadding>
+            <ListItemButton
+              component={Link}
+              to={item.to}
+              selected={location.pathname.endsWith(item.to)}
+              sx={{
+                color: "#fff",
+                "&.Mui-selected, &.Mui-selected:hover": {
+                  backgroundColor: "#334155",
+                  color: "#f1c40f"
+                },
+                "&:hover": {
+                  backgroundColor: "#273449",
+                  color: "#f1c40f"
+                }
+              }}
+            >
+              <ListItemText primary={item.label} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+    </Box>
+  );
 
   return (
-    <div className={`dashboard-container${sidebarOpen ? " sidebar-active" : ""}`}>
-      <button
-        className="sidebar-toggle"
-        aria-label="Toggle sidebar"
-        onClick={() => setSidebarOpen((open) => !open)}
-        aria-expanded={sidebarOpen}
-        aria-controls="admin-sidebar"
+    <Box sx={{ display: "flex" }}>
+      {/* AppBar with Hamburger */}
+      <AppBar
+        position="fixed"
+        sx={{
+          zIndex: (theme) => theme.zIndex.drawer + 1,
+          bgcolor: "#2c3e50"
+        }}
+        elevation={1}
       >
-        <span className="hamburger"></span>
-        <span className="hamburger"></span>
-        <span className="hamburger"></span>
-      </button>
-      {/* Overlay for mobile */}
-      {sidebarOpen && <div className="sidebar-backdrop" aria-hidden="true"></div>}
-      <aside
-        ref={sidebarRef}
-        id="admin-sidebar"
-        className={`sidebar${sidebarOpen ? " open" : ""}`}
+        <Toolbar>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={() => setSidebarOpen(true)}
+            sx={{ mr: 2 }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" noWrap component="div">
+            Dashboard
+          </Typography>
+        </Toolbar>
+      </AppBar>
+
+      {/* Drawer for Sidebar */}
+      <Drawer
+        anchor="left"
+        open={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+        ModalProps={{
+          keepMounted: true,
+        }}
+        sx={{
+          "& .MuiDrawer-paper": {
+            width: drawerWidth,
+            boxSizing: "border-box",
+            background: "#1e293b",
+            color: "#fff"
+          }
+        }}
       >
-        <h2>Admin Panel</h2>
-        <nav>
-          <ul>
-            <li>
-              <Link to="exams" className={location.pathname.endsWith("/exams") ? "active" : ""}>Exam List</Link>
-            </li>
-            <li>
-              <Link to="exams/add" className={location.pathname.endsWith("/exams/add") ? "active" : ""}>Add Exam</Link>
-            </li>
-            <li>
-              <Link to="duties" className={location.pathname.endsWith("/duties") ? "active" : ""}>Duty Management</Link>
-            </li>
-            <li>
-              <Link to="allocations" className={location.pathname.endsWith("/allocations") ? "active" : ""}>Slot Allocation</Link>
-            </li>
-            <li>
-              <Link to="resources" className={location.pathname.endsWith("/resources") ? "active" : ""}>Resource Management</Link>
-            </li>
-            <li>
-              <Link to="slot-generation" className={location.pathname.endsWith("/slot-generation") ? "active" : ""}>Slot Generation</Link>
-            </li>
-          </ul>
-        </nav>
-      </aside>
-      <main className="main-content">
+        {drawer}
+      </Drawer>
+
+      {/* Main content */}
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          bgcolor: "#f5f7fa",
+          minHeight: "100vh",
+          p: { xs: 2, md: 4 },
+          mt: 8
+        }}
+      >
         <Outlet />
-      </main>
-    </div>
+      </Box>
+    </Box>
   );
 };
 

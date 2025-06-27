@@ -68,23 +68,24 @@ const ExamList = () => {
   }, []);
 
   return (
-    <Container  maxWidth="lg"
-  disableGutters
-  sx={{
-    py: 0,
-    mt: 0,
-    height: '100vh',
-    overflow: 'hidden',  // Prevent scrollbars
-    display: 'flex',
-    flexDirection: 'column'
-  }}>
+    <Container
+      maxWidth="lg"
+      disableGutters
+      sx={{
+        py: 0,
+        mt: 0,
+        height: '100vh',
+        display: 'flex',
+        flexDirection: 'column'
+      }}
+    >
       <Box className="exam-header-box">
         <Typography variant="h4" className="exam-heading">
           Exam Records
         </Typography>
       </Box>
 
-      <Grid container spacing={2} alignItems="center" sx={{ mb: 3 }}>
+      <Grid container spacing={2} alignItems="center" sx={{ mb: 2, px: 2 }}>
         <Grid item xs={12} md={6}>
           <TextField
             placeholder="Search exams"
@@ -117,14 +118,14 @@ const ExamList = () => {
             className="filter-select"
             IconComponent={ArrowDropDownIcon}
             inputProps={{ className: 'filter-input' }}
-             MenuProps={{
-    PaperProps: {
-      sx: {
-        mt: 1,
-        borderRadius: '10px',
-      },
-    },
-  }}
+            MenuProps={{
+              PaperProps: {
+                sx: {
+                  mt: 1,
+                  borderRadius: '10px',
+                },
+              },
+            }}
           >
             {semesters.map(semester => (
               <MenuItem key={semester} value={semester} className="dropdown-item">
@@ -136,7 +137,7 @@ const ExamList = () => {
       </Grid>
 
       {filteredExams.length > itemsPerPage && (
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 1 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 1, px: 2 }}>
           <Pagination
             count={Math.ceil(filteredExams.length / itemsPerPage)}
             page={currentPage}
@@ -147,55 +148,72 @@ const ExamList = () => {
         </Box>
       )}
 
-      <TableContainer component={Paper} elevation={3}>
-        <Table>
-          <TableHead sx={{ bgcolor: '#1e293b' }}>
-            <TableRow>
-              <TableCell sx={{ color: '#fff' }}>Date</TableCell>
-              <TableCell sx={{ color: '#fff' }}>Semester</TableCell>
-              <TableCell sx={{ color: '#fff' }}>Course</TableCell>
-              <TableCell sx={{ color: '#fff' }}>Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {currentExams.length === 0 ? (
-              <TableRow>
-                <TableCell colSpan={4} align="center" sx={{ fontStyle: 'italic', py: 4 }}>
-                  No exams found.
-                </TableCell>
-              </TableRow>
-            ) : (
-              currentExams.map(exam => (
-                <TableRow key={exam.id} hover>
-                  <TableCell>{exam.date}</TableCell>
-                  <TableCell>{exam.semester}</TableCell>
-                  <TableCell>{exam.course}</TableCell>
-                  <TableCell>
-                    <Button
-                      component={Link}
-                      to={`/admin/exams/${exam.id}`}
-                      variant="contained"
-                      size="small"
-                      sx={{ mr: 1, backgroundColor: '#1976d2' }}
-                    >
-                      Edit
-                    </Button>
-                    <Button
-                      variant="contained"
-                      color="error"
-                      size="small"
-                    >
-                      Delete
-                    </Button>
+      {/* THIS BOX IS NOT SCROLLABLE, ONLY THE TABLE AREA BELOW IS */}
+      <Box sx={{
+        flexGrow: 1,
+        px: 2,
+        pb: 2,
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: 0, // Important for flexbox children to allow shrinking
+      }}>
+        <TableContainer
+          component={Paper}
+          elevation={3}
+          sx={{
+            width: '100%',
+            maxHeight: { xs: 300, sm: 400, md: 500 }, // Set your desired height here
+            overflowY: 'auto'
+          }}
+        >
+          <Table stickyHeader sx={{ minWidth: 650 }}>
+            <TableHead>
+  <TableRow>
+    <TableCell sx={{ color: '#fff', backgroundColor: '#1e293b',fontSize: '1.15rem', fontWeight: 600 }}>Date</TableCell>
+    <TableCell sx={{ color: '#fff', backgroundColor: '#1e293b',fontSize: '1.15rem', fontWeight: 600 }}>Semester</TableCell>
+    <TableCell sx={{ color: '#fff', backgroundColor: '#1e293b',fontSize: '1.15rem', fontWeight: 600 }}>Course</TableCell>
+    <TableCell sx={{ color: '#fff', backgroundColor: '#1e293b',fontSize: '1.15rem', fontWeight: 600 }}>Actions</TableCell>
+  </TableRow>
+</TableHead>
+
+            <TableBody>
+              {currentExams.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={4} align="center" sx={{ fontStyle: 'italic', py: 4 }}>
+                    No exams found.
                   </TableCell>
                 </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
-
-      
+              ) : (
+                currentExams.map(exam => (
+                  <TableRow key={exam.id} hover>
+                    <TableCell>{exam.date}</TableCell>
+                    <TableCell>{exam.semester}</TableCell>
+                    <TableCell>{exam.course}</TableCell>
+                    <TableCell>
+                      <Button
+                        component={Link}
+                        to={`/admin/exams/${exam.id}`}
+                        variant="contained"
+                        size="small"
+                        sx={{ mr: 1, backgroundColor: '#1976d2' }}
+                      >
+                        Edit
+                      </Button>
+                      <Button
+                        variant="contained"
+                        color="error"
+                        size="small"
+                      >
+                        Delete
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
     </Container>
   );
 };
