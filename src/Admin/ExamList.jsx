@@ -69,16 +69,16 @@ const ExamList = () => {
 
   return (
     <Container
-      maxWidth="lg"
-      disableGutters
-      sx={{
-        py: 0,
-        mt: 0,
-        height: '100vh',
-        display: 'flex',
-        flexDirection: 'column'
-      }}
-    >
+  maxWidth="lg"
+  disableGutters
+  sx={{
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    overflow: 'hidden'
+  }}
+>
+
       <Box className="exam-header-box">
         <Typography variant="h4" className="exam-heading">
           Exam Records
